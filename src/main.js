@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 import './public-path'
 import App from './App.vue'
-import { routes } from './routes'
+import { routes, beforeEach, beforeResolve, afterEach, onError, onReady } from './routes'
 import store from './store'
 const MICRO_NAME = ''
 
@@ -31,9 +31,11 @@ function render () {
     mode: 'history',
     routes
   })
-  router.onError = (err) => {
-    throw new Error(err)
-  }
+  router.beforeEach = beforeEach
+  router.beforeResolve = beforeResolve
+  router.afterEach = afterEach
+  router.onReady = onReady
+  router.onError = onError
   // 挂载应用
   instance = new Vue({
     router,
