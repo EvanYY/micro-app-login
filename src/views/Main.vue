@@ -1,13 +1,19 @@
 <template>
- <div>
-    i am crm app
- </div>
+  <div>
+    i am demo app
+    <div v-for="(item) in menus" :key="item.key">
+      <router-link :to="item.route">
+        {{item.title}}
+      </router-link>
+    </div>
+    <router-view :key="(new Date()).getTime()" />
+  </div>
 </template>
 
 <script>
 import _isFunction from 'lodash/isFunction'
 export default {
-  name: 'AppCrmMain',
+  name: '',
   beforeRouteEnter (to, from, next) {
     next(vm => {
       return true
@@ -19,12 +25,23 @@ export default {
   components: {},
   mixins: [],
   props: {},
-  watch: {
-
-  },
+  watch: {},
   computed: {},
   data () {
-    return {}
+    return {
+      menus: [
+        {
+          key: 'vue',
+          route: '/home',
+          title: 'Home'
+        },
+        {
+          key: 'vue-list',
+          route: '/about',
+          title: 'About'
+        }
+      ]
+    }
   },
   methods: {
     test () {
@@ -41,5 +58,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 </style>

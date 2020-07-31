@@ -39,3 +39,4 @@ yarn lint
 7. 挂载 id html 注册id
 8. routes 
 9. 路由守卫
+10. 修改public-path 线上新增仓库地址
