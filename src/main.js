@@ -5,7 +5,10 @@ import './public-path'
 import App from './App.vue'
 import { routes, beforeEach, beforeResolve, afterEach, onError, onReady } from './routes'
 import store from './store'
-const MICRO_NAME = ''
+import SharedModule from '@/shared'
+import { toStore } from '@/shared/subscript-store'
+import { cloneDeep } from 'lodash'
+const MICRO_NAME = '_________'
 
 Vue.use(VueRouter)
 
@@ -18,31 +21,37 @@ Vue.config.productionTip = false
 
 let instance = null
 let router = null
-
+let sharedUnsubscribe = null
 /**
  * 渲染函数
  * 两种情况：主应用生命周期钩子中运行 / 微应用单独启动时运行
  */
-function render (porps) {
+function render (props) {
+  const { shared = SharedModule.getShared(),NODE_ENV = process.env.NODE_ENV } = props
+  SharedModule.overloadShared(shared)
+  const { common } = shared.getState()
+  window.CUSTOM_NODE_ENV = NODE_ENV // 挂在应用运行环境变量
+  store.commit('MainCommon/updateMainCommon', cloneDeep(common))
+  // store.commit('MainCommon/_________', cloneDeep(_________)) // 微应用在全局维护的状态值
+  sharedUnsubscribe = shared.subscribe(toStore) // 订阅主应用通信模型映射到当前应用
   // 在 render 中创建 VueRouter，可以保证在卸载微应用时，移除 location 事件监听，防止事件污染
   router = new VueRouter({
     // 运行在主应用中时，添加路由命名空间 /vue
-    base: window.__POWERED_BY_QIANKUN__ ? '/' : '/',
+    base: window.__POWERED_BY_QIANKUN__ ? '/_________' : '/',
     mode: 'history',
     routes
   })
-  // 注册钩子
-  router.beforeEach = beforeEach
-  router.beforeResolve = beforeResolve
-  router.afterEach = afterEach
-  router.onReady = onReady
-  router.onError = onError
+  router.beforeEach(beforeEach)
+  router.beforeResolve(beforeResolve)
+  router.afterEach(afterEach)
+  router.onReady(onReady)
+  router.onError(onError)
   // 挂载应用
   instance = new Vue({
     router,
     store,
     render: (h) => h(App)
-  }).$mount('#')
+  }).$mount('#_________')
 }
 
 // 独立运行时，直接挂载应用
@@ -74,4 +83,5 @@ export async function unmount () {
   instance.$destroy()
   instance = null
   router = null
+  sharedUnsubscribe()
 }

@@ -6,8 +6,14 @@
 
 <script>
 // @ is an alias to /src
+import SharedModule from '@/shared'
 
 export default {
-  name: 'Home'
+  name: 'Home',
+  mounted () {
+    const shared = SharedModule.getShared()
+
+    console.log('from crm home', shared)
+  }
 }
 </script>

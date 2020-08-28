@@ -1,20 +1,34 @@
 <template>
-   <div id="">
-     <router-view :key="(new Date()).getTime()" />
-   </div>
+  <div id="micro-app-crm">
+    <h1>_________</h1>
+    <router-view :key="(new Date()).getTime()" />
+  </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  components: {
-  },
+  components: {},
   data () {
-    return {
-
+    return {}
+  },
+  computed: {
+    ...mapState('MainCommon', {
+      a: state => state.common
+    })
+  },
+  mounted () {
+    console.log(this.a)
+  },
+  watch: {
+    a: {
+      handler: function (val) {
+        console.log('from crm change', val)
+      },
+      deep: true
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-
 </style>
