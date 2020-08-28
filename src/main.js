@@ -81,6 +81,7 @@ export async function mount (props) {
 export async function unmount () {
   console.log(`${MICRO_NAME} unmount`)
   instance.$destroy()
+  instance.$el.innerHTML = ''
   instance = null
   router = null
   sharedUnsubscribe()
