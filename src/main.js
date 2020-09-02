@@ -27,7 +27,7 @@ let sharedUnsubscribe = null
  * 两种情况：主应用生命周期钩子中运行 / 微应用单独启动时运行
  */
 function render (props) {
-  const { shared = SharedModule.getShared(),NODE_ENV = process.env.NODE_ENV } = props
+  const { shared = SharedModule.getShared(), NODE_ENV = process.env.NODE_ENV } = props
   SharedModule.overloadShared(shared)
   const { common } = shared.getState()
   window.CUSTOM_NODE_ENV = NODE_ENV // 挂在应用运行环境变量
