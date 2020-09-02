@@ -2,7 +2,7 @@ const path = require('path')
 const eslintSorceMap = process.env.NODE_ENV !== 'production' || process.env.NODE_ENV === 'test'
 module.exports = {
   lintOnSave: eslintSorceMap,
-  publicPath: process.env.NODE_ENV === 'production' ? '/_________/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/micro-app-login/' : '/',
   configureWebpack: {
     resolve: {
       alias: {
@@ -11,11 +11,11 @@ module.exports = {
     },
     output: {
       // 微应用的包名，这里与主应用中注册的微应用名称一致
-      library: '_________',
+      library: 'MicroAppLogin',
       // 将你的 library 暴露为所有的模块定义下都可运行的方式
       libraryTarget: 'umd',
       // 按需加载相关，设置为 webpackJsonp_MicroAppCrm 即可
-      jsonpFunction: `webpackJsonp__________`
+      jsonpFunction: `webpackJsonp_MicroAppLogin`
     }
   },
   chainWebpack: config => {
@@ -29,7 +29,7 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     // 监听端口
-    port: _________,
+    port: 5800,
     open: false,
     // 关闭主机检查，使微应用可以被 fetch
     disableHostCheck: true,

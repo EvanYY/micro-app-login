@@ -1,6 +1,6 @@
 <template>
   <div id="micro-app-crm">
-    <h1>_________</h1>
+    <h1>micro-app-login</h1>
     <router-view :key="(new Date()).getTime()" />
   </div>
 </template>

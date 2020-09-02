@@ -8,7 +8,7 @@ import store from './store'
 import SharedModule from '@/shared'
 import { toStore } from '@/shared/subscript-store'
 import { cloneDeep } from 'lodash'
-const MICRO_NAME = '_________'
+const MICRO_NAME = 'MicroAppLogin'
 
 Vue.use(VueRouter)
 
@@ -37,7 +37,7 @@ function render (props) {
   // 在 render 中创建 VueRouter，可以保证在卸载微应用时，移除 location 事件监听，防止事件污染
   router = new VueRouter({
     // 运行在主应用中时，添加路由命名空间 /vue
-    base: window.__POWERED_BY_QIANKUN__ ? '/_________' : '/',
+    base: window.__POWERED_BY_QIANKUN__ ? '/login' : '/',
     mode: 'history',
     routes
   })
@@ -51,7 +51,7 @@ function render (props) {
     router,
     store,
     render: (h) => h(App)
-  }).$mount('#_________')
+  }).$mount('#micro-app-login')
 }
 
 // 独立运行时，直接挂载应用

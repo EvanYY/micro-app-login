@@ -4,9 +4,9 @@ import SharedModule from './index'
 // 值映射
 export const toStore = () => {
   debugger
-  const { common, _________ } = SharedModule.getShared().getState()
+  const { common, MicroAppLogin } = SharedModule.getShared().getState()
   store.commit('MainCommon/updateMainCommon', (common))
-  if (_________) {
+  if (MicroAppLogin) {
     // 不需要则注释 主应用维护的 微应用域下状态值 映射
     // store.commit('MicroAppCrm/_________', (_________))
   }
