@@ -1,8 +1,15 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import App from './App.vue'
+
+// 私有模块
+import '@/plugins/Element'
+import ElementLocale from 'element-ui/lib/locale'
+import i18n from '@/locale'
+// 注册全局组件
+import '@/plugins/custom'
 
 import './public-path'
-import App from './App.vue'
+import VueRouter from 'vue-router'
 import { routes, beforeEach, beforeResolve, afterEach, onError, onReady } from './routes'
 import store from './store'
 import SharedModule from '@/shared'
@@ -11,7 +18,7 @@ import { cloneDeep } from 'lodash'
 const MICRO_NAME = 'MicroAppLogin'
 
 Vue.use(VueRouter)
-
+ElementLocale.i18n((key, value) => i18n.t(key, value))
 
 Vue.config.productionTip = false
 /**
@@ -22,16 +29,23 @@ Vue.config.productionTip = false
 let instance = null
 let router = null
 let sharedUnsubscribe = null
+window.XHLCUSTOM_ENV = {}
 /**
  * 渲染函数
  * 两种情况：主应用生命周期钩子中运行 / 微应用单独启动时运行
  */
 function render (props) {
-  const { shared = SharedModule.getShared(), NODE_ENV = process.env.NODE_ENV } = props
+  const { shared = SharedModule.getShared(), NODE_ENV = process.env.NODE_ENV, VUE_APP_MODE = process.env.VUE_APP_MODE } = props
   SharedModule.overloadShared(shared)
   const { common } = shared.getState()
-  window.CUSTOM_NODE_ENV = NODE_ENV // 挂在应用运行环境变量
+  // window.CUSTOM_NODE_ENV = NODE_ENV // 挂在应用运行环境变量
+  // window.CUSTOM_VUE_APP_MODE = VUE_APP_MODE // 挂在应用运行环境变量
+  window.XHLCUSTOM_ENV = {
+    NODE_ENV,
+    VUE_APP_MODE
+  }
   store.commit('MainCommon/updateMainCommon', cloneDeep(common))
+  i18n.locale = common.switchLang
   // store.commit('MainCommon/_________', cloneDeep(_________)) // 微应用在全局维护的状态值
   sharedUnsubscribe = shared.subscribe(toStore) // 订阅主应用通信模型映射到当前应用
   // 在 render 中创建 VueRouter，可以保证在卸载微应用时，移除 location 事件监听，防止事件污染
@@ -50,6 +64,7 @@ function render (props) {
   instance = new Vue({
     router,
     store,
+    i18n,
     render: (h) => h(App)
   }).$mount('#micro-app-login')
 }

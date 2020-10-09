@@ -1,12 +1,12 @@
 <template>
-  <div id="micro-app-crm">
-    <h1>micro-app-login</h1>
+  <div id="micro-app-crm" style="width: 100%; height: 100vh">
     <router-view :key="(new Date()).getTime()" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import i18n from '@/locale'
 export default {
   components: {},
   data () {
@@ -14,21 +14,20 @@ export default {
   },
   computed: {
     ...mapState('MainCommon', {
-      a: state => state.common
+      lang: state => state.common.switchLang
     })
   },
   mounted () {
     console.log(this.a)
   },
   watch: {
-    a: {
+    lang: {
       handler: function (val) {
-        console.log('from crm change', val)
+        // 语言切换
+        i18n.locale = val
       },
       deep: true
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-</style>

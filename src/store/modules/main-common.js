@@ -1,6 +1,5 @@
 import { isObject, cloneDeep } from 'lodash'
 import SharedModule from '@/shared'
-const shared = SharedModule.getShared()
 
 // 全局状态观察池
 export default {
@@ -10,15 +9,16 @@ export default {
   },
   mutations: {
     // 勿动
-    updateMainCommon (state, value = {}) {
-      if (!isObject(value)) throw Error('main value has to be object')
-      state.common = value
+    updateMainCommon (state, payload = {}) {
+      if (!isObject(payload)) throw Error('main payload has to be object')
+      state.common = payload
     },
-    updateMainCommonKey (state, value = {}) {
-      if (!isObject(value)) throw Error('formation of value has to key: value')
-      for (const k in value) {
-        state.common[k] = value[k]
+    updateMainCommonKey (state, payload = {}) {
+      if (!isObject(payload)) throw Error('formation of payload has to key: payload')
+      for (const k in payload) {
+        state.common[k] = payload[k]
       }
+      const shared = SharedModule.getShared()
       // 更新全局组件 common 状态值
       shared.dispatch({ type: 'COMMON_SET_VALUE', payload: cloneDeep(state.common) })
     }

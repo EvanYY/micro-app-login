@@ -3,6 +3,7 @@ import { isObject } from 'lodash'
 // import SharedModule from '@/shared'
 // const shared = SharedModule.getShared()
 // 暴露给全局的自定义共享值 需要多应用共享需放在main-common
+// 业务模块区分
 export default {
   namespaced: true,
   state: {

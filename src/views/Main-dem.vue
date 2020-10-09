@@ -1,16 +1,17 @@
 <template>
   <div>
     <div @click="getShared">
-      i am crm app Main   FUCK!
+      i am crm app Main FUCK!
     </div>
     <h1 @click="dispatchs">
-      i am crm app Main   FUCK!
+      i am crm app Main FUCK!
     </h1>
     <div v-for="(item) in menus" :key="item.key">
       <router-link :to="item.route">
         {{item.title}}
       </router-link>
     </div>
+    <div @click="tobase">to-----base</div>
     <router-view :key="(new Date()).getTime()" />
   </div>
 </template>
@@ -22,7 +23,7 @@ import SharedModule from '@/shared'
 export default {
   name: 'AppCrmMain',
   beforeRouteEnter (to, from, next) {
-    next(vm => {
+    next((vm) => {
       return true
     })
   },
@@ -55,6 +56,16 @@ export default {
     test () {
       return false
     },
+    tobase () {
+      SharedModule.getShared().dispatch({
+        type: 'TOUCH_BEHAVIOR',
+        payload: {
+          type: 'router',
+          method: 'replace',
+          payload: '/base'
+        }
+      })
+    },
     getShared () {
       console.log(this.store.getState())
     },
@@ -68,10 +79,11 @@ export default {
       this.getShared()
     }
   },
-  created () { this.store = SharedModule.getShared() },
-  mounted () {
-
+  created () {
+    this.store = SharedModule.getShared()
+    console.log(this.store)
   },
+  mounted () {},
   beforeDestroy () {
     console.log('main beforeDestroy')
   }

@@ -3,7 +3,6 @@ import SharedModule from './index'
 // import { cloneDeep } from 'lodash'
 // 值映射
 export const toStore = () => {
-  debugger
   const { common, MicroAppLogin } = SharedModule.getShared().getState()
   store.commit('MainCommon/updateMainCommon', (common))
   if (MicroAppLogin) {
